@@ -6,36 +6,69 @@ n = 4;
 
 % Compute f
 f = zeros(n, n);
-for i = 1:n
-    for j = 1:n
+for i = 1:
+    for j = 1:n+2
         f(i, j) = i + j;
     end
 end
 
+imagesc(f)
+
+% Compute A
 % Compute coefficients
 c0 = -kappa^2 - 2/dx^2 - 2/dy^2;
 c1 = 1/dx^2;
 c2 = 1/dy^2;
 
-% Initialize domain nodes coefficient
-N = (n + 2)^2;
-A = zeros(N);
-for j = 2:n-1
-    for i = 2:n-1
-        k = j*n + i;
+% Initialize domain nodes coefficients
+A = zeros(N^2);
+for j = 2:N-1
+    for i = 2:N-1
+        k = (j-1)*N + i;
         A(k, k) = c0;
         A(k, k - 1) = c1;
         A(k, k + 1) = c1;
-        A(k, k - n) = c2;
-        A(k, k + n) = c2;
+        A(k, k - N) = c2;
+        A(k, k + N) = c2;
     end
 end
 
-A
-
 % Initialize ghost nodes coefficients
-    
+for i = 2:N-1
+    k1 = i;
+    k2 = 5*N + i;
+    A(k1, k1) = 1;
+    A(k1, k1 + N) = -1;
+    A(k2, k2) = 1;
+    A(k2, k2 - N) = -1;
+end
 
-% compute A
+for j = 2:N-1
+    k3 = (j-1)*N + 1;
+    k4 = (j-1)*N + 6;
+    A(k3, k3) = 1;
+    A(k3, k3 + 1) = -1;
+    A(k4, k4) = 1;
+    A(k4, k4 - 1) = -1;
+end
+
+A(1, 1) = 1;
+A(n, n) = 1;
+A(n*n, n*n) = 1;
+A(n*(n-1) + 1, n*(n-1) + 1) = 1;
+
+f_new = reshape(f, [(N)^2, 1]);
+
+imagesc(A)
+
+% Compute solution for Au = f
+
+u = A \ f_new;
+
+
+% Compute eigenvalues
+e = eig(A);
+
+
            
             
