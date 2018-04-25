@@ -1,8 +1,10 @@
+% 2D Toy Problem for HW1 (CMIS18)
+
 % Initialize variables
 dx = 1;
 dy = 1;
-kappa = 0.1;
-n = 10;
+kappa = 2;
+n = 4;
 N = n + 2;
 
 % Compute f
@@ -57,14 +59,14 @@ for j = 2:N-1
     A(k4, k4 - 1) = -1;
 end
 
-A(1, 1) = 1;
-A(N, N) = 1;
-A(N*N, N*N) = 1;
-A(N*(N-1) + 1, N*(N-1) + 1) = 1;
+A(1, 1) = 10;
+A(N, N) = 10;
+A(N*N, N*N) = 10;
+A(N*(N-1) + 1, N*(N-1) + 1) = 10;
 
 f_new = reshape(f, [(N)^2, 1]);
 
-imagesc(A)
+imagesc(A);
 
 % Compute solution for Au = f
 
@@ -74,14 +76,10 @@ u_new = reshape(u, [N, N])';
 
 % Remove ghost nodes from u matrix
 u_new = u_new(2:5, 2:5);
-surf(u_new);
 
 %surf(u_new);
 
 
 % Compute eigenvalues
 e = eig(A);
-
-
-           
             
