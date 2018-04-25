@@ -1,5 +1,6 @@
 % Initialize variables
-dx = dy = 1;
+dx = 1;
+dy = 1;
 kappa = 2;
 n = 4;
 
@@ -16,11 +17,11 @@ c0 = -kappa^2 - 2/dx^2 - 2/dy^2;
 c1 = 1/dx^2;
 c2 = 1/dy^2;
 
-% Initialize domain coefficient matrix
+% Initialize domain nodes coefficient
 N = (n + 2)^2;
 A = zeros(N);
-for j = 2:N-1
-    for i = 2:N-1
+for j = 2:n-1
+    for i = 2:n-1
         k = j*n + i;
         A(k, k) = c0;
         A(k, k - 1) = c1;
@@ -30,7 +31,9 @@ for j = 2:N-1
     end
 end
 
-% 
+A
+
+% Initialize ghost nodes coefficients
     
 
 % compute A
