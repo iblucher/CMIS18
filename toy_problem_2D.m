@@ -1,8 +1,8 @@
 % Initialize variables
 dx = 1;
 dy = 1;
-kappa = 2;
-n = 4;
+kappa = 0.1;
+n = 10;
 N = n + 2;
 
 % Compute f
@@ -37,7 +37,7 @@ end
 % Initialize ghost nodes coefficients
 for i = 2:N-1
     j1 = 1;
-    j2 = 6;
+    j2 = N;
     k1 = (j1 - 1) * N + i;
     k2 = (j2 - 1) * N + i;
     A(k1, k1) = 1;
@@ -48,7 +48,7 @@ end
 
 for j = 2:N-1
     i1 = 1;
-    i2 = 6;
+    i2 = N;
     k3 = (j-1)*N + i1;
     k4 = (j-1)*N + i2;
     A(k3, k3) = 1;
@@ -57,10 +57,10 @@ for j = 2:N-1
     A(k4, k4 - 1) = -1;
 end
 
-A(1, 1) = 10;
-A(N, N) = 10;
-A(N*N, N*N) = 10;
-A(N*(N-1) + 1, N*(N-1) + 1) = 10;
+A(1, 1) = 1;
+A(N, N) = 1;
+A(N*N, N*N) = 1;
+A(N*(N-1) + 1, N*(N-1) + 1) = 1;
 
 f_new = reshape(f, [(N)^2, 1]);
 
@@ -69,6 +69,14 @@ imagesc(A)
 % Compute solution for Au = f
 
 u = A \ f_new;
+
+u_new = reshape(u, [N, N])';
+
+% Remove ghost nodes from u matrix
+u_new = u_new(2:5, 2:5);
+surf(u_new);
+
+%surf(u_new);
 
 
 % Compute eigenvalues
