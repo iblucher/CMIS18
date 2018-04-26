@@ -13,8 +13,7 @@ mesh_interval = (xa:dx:xb);
 mesh_interval
 
 % Draw computational mesh
-figure(1);
-plot(mesh_interval, 1, '-.ro');
+%imagesc(mesh_interval);
 
 % Assemble matrix system
 % Compute coefficients of domain nodes
@@ -30,14 +29,3 @@ for i = 2:N_g-1
 end
 
 % Compute coefficients of ghost nodes
-%A(1, 1) = 1;
-%A(1, 2) = -1;
-%A(8, 8) = 1;
-%A(8, 7) = -1;
-
-% Plot matrix structure
-figure(2);
-imagesc(A);
-
-% Compute matrix eigenvalues
-e = eig(A);

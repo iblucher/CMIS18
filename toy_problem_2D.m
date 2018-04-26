@@ -15,6 +15,7 @@ for i = 2:N-1
     end
 end
 
+figure(1)
 imagesc(f)
 
 % Compute A
@@ -66,6 +67,7 @@ A(N*(N-1) + 1, N*(N-1) + 1) = 10;
 
 f_new = reshape(f, [(N)^2, 1]);
 
+figure(2);
 imagesc(A);
 
 % Compute solution for Au = f
@@ -77,7 +79,8 @@ u_new = reshape(u, [N, N])';
 % Remove ghost nodes from u matrix
 u_new = u_new(2:5, 2:5);
 
-%surf(u_new);
+figure(3);
+surf(u_new);
 
 
 % Compute eigenvalues
