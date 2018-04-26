@@ -3,17 +3,19 @@
 % Initialize variables
 dx = 1;
 dy = 1;
-kappa = 2;
-n = 4;
+kappa = 0.001;
+n = 32;
 N = n + 2;
 
 % Compute f
 f = zeros(N);
-for i = 2:N-1
-    for j = 2:N-1
-        f(i, j) = i + j;
-    end
-end
+%for i = 2:N-1
+    %for j = 2:N-1
+        %f(i, j) = i + j;
+    %end
+%end
+f(16, 16) = 1;
+
 
 figure(1)
 imagesc(f)
@@ -80,6 +82,7 @@ grid on
 title('Coefficient matrix fill pattern', 'FontSize', f_size, 'FontName',f_type );
 xlabel('Columns', 'FontSize', f_size, 'FontName', f_type); 
 ylabel('Rows', 'FontSize', f_size, 'FontName', f_type);
+colorbar;
 print(gcf,'-depsc2', 'fill2D');
 hold off
 
@@ -91,10 +94,15 @@ u = A \ f_new;
 u_new = reshape(u, [N, N])';
 
 % Remove ghost nodes from u matrix
-u_new = u_new(2:5, 2:5);
+u_new = u_new(2:N - 1, 2:N - 1);
 
 figure(3);
-surf(u_new);
+surfc(u_new);
+title('Solution matrix', 'FontSize', f_size, 'FontName',f_type );
+xlabel('Columns', 'FontSize', f_size, 'FontName', f_type); 
+ylabel('Rows', 'FontSize', f_size, 'FontName', f_type);
+colorbar;
+print(gcf,'-depsc2', 'u2D');
 
 
 % Compute eigenvalues

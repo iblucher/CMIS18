@@ -30,14 +30,22 @@ for i = 2:N_g-1
 end
 
 % Compute coefficients of ghost nodes
-%A(1, 1) = 1;
-%A(1, 2) = -1;
-%A(8, 8) = 1;
-%A(8, 7) = -1;
+A(1, 1) = 1;
+A(1, 2) = -1;
+A(8, 8) = 1;
+A(8, 7) = -1;
 
 % Plot matrix structure
+f_type = 'Times';
+f_size = 12;
+
 figure(2);
 imagesc(A);
+grid on;
+colorbar;
+title('Assembly matrix structure', 'FontSize', f_size, 'FontName',f_type );
+xlabel('Columns', 'FontSize', f_size, 'FontName', f_type); 
+ylabel('Rows', 'FontSize', f_size, 'FontName', f_type);
 
 % Compute matrix eigenvalues
 e = eig(A);
