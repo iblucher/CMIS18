@@ -71,6 +71,8 @@ figure(2);
 
 f_type = 'Times';
 f_size = 12;
+paper_width_cm = 21;
+paper_height_cm = 9*21/16;
  
 fh = figure(2);
 clf;
@@ -80,7 +82,10 @@ grid on
 title('Coefficient matrix fill pattern', 'FontSize', f_size, 'FontName',f_type );
 xlabel('Columns', 'FontSize', f_size, 'FontName', f_type); 
 ylabel('Rows', 'FontSize', f_size, 'FontName', f_type);
-print(gcf,'-depsc2', 'fill2D');
+set(fh, 'Position', [100, 100, pixel_width, pixel_height]);
+set(fh, 'PaperUnits', 'centimeters');
+set(fh, 'PaperPosition', [0 0 paper_width_cm paper_height_cm]);
+print(gcf,'-depsc2', 'my_own_filename');
 hold off
 
 
