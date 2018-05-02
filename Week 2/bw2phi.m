@@ -1,4 +1,4 @@
-function phi = bw2phi( I )
+function phi = bw2phi(I)
 % BW2PHI  Convert black and white image to a signed distance field
 % input:
 %   I - The black and white image

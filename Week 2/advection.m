@@ -3,8 +3,8 @@ close all;
 clc;
 
 % Initializing variables
-n = 256;        % length of grid
-k = 200;        % number of steps to reach max time
+n = 64;        % length of grid
+k = 100;        % number of steps to reach max time
 L = 10;         % used for calculating grid interval
 T = 5;          % maximum time 
 dt = T/k;       % time step
@@ -14,6 +14,7 @@ dy = dx;
 % Initialize peaks as scalar field
 [X, Y] = meshgrid(-L/2:dx:L/2, -L/2:dy:L/2);
 Z = peaks(X, Y);
+figure(1);
 surf(Z);
 
 % Backtrack coordinates
@@ -37,6 +38,7 @@ for t = 1:k
     %interpolate
     nZ = interp2(X, Y, nZ, nX(:), nY(:), 'linear', 0);
     nZ = reshape(nZ, [n + 1, n + 1]);
+    figure(1);
     surf(X, Y, nZ);
     zlim([-10, 10]);
     pause(0.05)
