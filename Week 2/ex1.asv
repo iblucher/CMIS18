@@ -4,11 +4,11 @@ clc;
 
 % Initializing variables
 n = 256;        % length of grid
-k = 200;        % number of steps to reach max time
-L = 10;         % used for calculating grid interval
-T = 5;          % maximum time 
-dt = T/k;       % time step
-dx = L/n;       % grid step size
+k = 200;        % 
+L = 10;
+T = 5;
+dt = T/k;
+dx = L/n;
 dy = dx;
 
 % Initialize peaks as scalar field
