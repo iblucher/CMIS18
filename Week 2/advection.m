@@ -1,10 +1,8 @@
-clear all;
-close all;
-clc;
+function [dt, error] = advection(k)
 
 % Initializing variables
-n = 64;        % length of grid
-k = 100;        % number of steps to reach max time
+n = 32;        % length of grid
+%k = 100;        % number of steps to reach max time
 L = 10;         % used for calculating grid interval
 T = 5;          % maximum time 
 dt = T/k;       % time step
@@ -24,14 +22,14 @@ nY = Y;
 % Update equations
 uX = Y * dt;
 uY = (-X) * dt;
+nZ = Z;
 
 % Energy of scalar field
-E = sum(sum(Z));
-
-nZ = Z;
+E0 = sum(sum(dx * dy * nZ));
 
 % Time dependent loop
 for t = 1:k
+    t
     nX = X - uX;
     nY = Y - uY;
     
@@ -41,12 +39,9 @@ for t = 1:k
     figure(1);
     surf(X, Y, nZ);
     zlim([-10, 10]);
-    pause(0.05)
-    
-    % check for energy conservation
-    nE = sum(sum(nZ));
-    %if nE ~= E
-        %disp('energy not conserved');
-        %break;
-    %end
+    %pause(0.05)
+end
+
+nE = sum(sum(dx * dy * nZ));
+error = abs(nE - E0);
 end

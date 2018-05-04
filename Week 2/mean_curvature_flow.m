@@ -1,4 +1,4 @@
-function phi = mean_curvature_flow(phi,T)
+function phi = mean_curvature_flow(phi,T, dx)
 % MEAN_CURVATURE_FLOW - Mean Curvature Flow
 %   psi = curvatureflow(phi,T)
 % INPUT:
@@ -7,7 +7,7 @@ function phi = mean_curvature_flow(phi,T)
 % RESULT:
 %      psi - Resulting level set surface
 %
-    dx = 1;
+    %dx = 2;
     dy = dx;
     h = min(dx, dy);
     kappa = 1 / max(dx, dy);
