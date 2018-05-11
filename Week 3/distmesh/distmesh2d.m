@@ -65,7 +65,7 @@ x(2:2:end,:)=x(2:2:end,:)+h0/2;                      % Shift even rows
 p=[x(:),y(:)];                                       % List of node coordinates
 
 % 2. Remove points outside the region, apply the rejection method
-p=p(feval(fd,p,varargin{:})<geps,:);                 % Keep only d<0 points
+p=p(feval(fd,p,varargin{:})<geps,:);          % Keep only d<0 points
 r0=1./feval(fh,p,varargin{:}).^2;                    % Probability to keep point
 p=p(rand(size(p,1),1)<r0./max(r0),:);                % Rejection method
 if ~isempty(pfix), p=setdiff(p,pfix,'rows'); end     % Remove duplicated nodes

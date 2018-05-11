@@ -32,12 +32,9 @@ end
 T = delaunay(X, Y);
 figure(4);
 triplot(T, X, Y);
-xlabel('x coordinates');
-ylabel('y coordinates');
+
 
 legitTris=delMesh(X,Y,phi);
 %%
 triplot(legitTris,X,Y);
-xlabel('x coordinates');
-ylabel('y coordinates');
 patch('Faces',legitTris,'Vertices',[X;Y]','FaceColor','red')

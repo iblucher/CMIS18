@@ -1,12 +1,14 @@
-function [NX,NY,newtris] = marching(X,Y,tris,phi)
+function [NX,NY,newtris] = marching(X,Y,tris,phi,cols,rows)
 newtris=[];
 NX=X;
 NY=Y;
 [~,N]=size(NX);
+
 tricount=size(tris);
 tricount=tricount(1);
 [M, NN] =size(phi);
 [GX,GY] = meshgrid(1:NN,1:M);
+localIndex=zeros(cols,rows,4);
 for i=1:tricount
 %    size(newtris)
     in1=0>interp2(GX,GY,phi,X(tris(i,1)),Y(tris(i,1)));
@@ -32,10 +34,11 @@ for i=1:tricount
             new1x=(X(pout)+X(pin1))/2;
             new1y=(Y(pout)+Y(pin1))/2;
             new2x=(X(pout)+X(pin2))/2;
-            new2y=(Y(pout)+Y(pin2))/2;
+            new2y=(Y(pout)+Y(pin2))/2; 
             NX=[NX new1x new2x];
             NY=[NY new1y new2y];
             N=N+2;
+            
             index1=N;
             index2=N-1;
             newtris=[newtris;pin1 pin2 index1];
@@ -69,3 +72,9 @@ for i=1:tricount
     end
 end
 
+%function [xi,yi]=getlocal(i,cols)
+%    yi=mod(i,cols);
+%    xi=(i-yi)/cols;
+%end
+
+%algorithm and problems for creating meshes
