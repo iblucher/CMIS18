@@ -5,11 +5,8 @@ load('data.mat');  % Load mesh
 
 Ke = zeros(3,cntT*3);
 K  = zeros(cntV,cntV); 
-f  = zeros(cntV,1); 
-%%
-triplot(T, X, Y);
+f  = zeros(cntV,1);
 
-%%
 for e=1:cntT
   
   % Get triangle indices
@@ -51,34 +48,36 @@ for e=1:cntT
   
 end
 
-figure(1);
-clf;  
-hold on;  
-spy(K);
-title('Fill pattern of stiffness matrix');
-ylabel('Row index');
-xlabel('Column index');
-hold off;
+% figure(1);
+% clf;  
+% hold on;  
+% spy(K);
+% title('Fill pattern of stiffness matrix');
+% ylabel('Row index');
+% xlabel('Column index');
+% hold off;
 
-figure(2);
-clf;  
-hold on;  
-plot(sort( eig(K) ), 'r-', 'LineWidth', 2);
-title('Eigenvalues of stiffness matrix');
-xlabel('Eigenvalue Index')
-ylabel('Value');
-hold off;
-axis tight;
+% figure(2);
+% clf;  
+% hold on;  
+% plot(sort( eig(K) ), 'r-', 'LineWidth', 2);
+% title('Eigenvalues of stiffness matrix');
+% xlabel('Eigenvalue Index')
+% ylabel('Value');
+% hold off;
+% axis tight;
 
 % Apply boundary conditions
 left_edge   = find(X<-2.9);
 right_edge  = find(X>2.9);
-middle_edge = find(X<.5 & X>-0.5);
+middle_edge = find(X<.1 & X>-0.1);
 a = 1;
-b = 1;
-c = 2;
-indices    = [left_edge; middle_edge; right_edge];
-values     = [ones(size(left_edge))*a ; ones(size(middle_edge))*c ;  ones(size(right_edge))*b];
+b = 2;
+%c = 3;
+%indices    = [left_edge; middle_edge; right_edge];
+indices    = [left_edge; right_edge];
+%values     = [ones(size(left_edge))*a ; ones(size(middle_edge))*c ;  ones(size(right_edge))*b];
+values     = [ones(size(left_edge))*a;  ones(size(right_edge))*b];
 
 
 u = zeros(size(X));
@@ -122,4 +121,5 @@ xlabel('x');
 ylabel('y');
 zlabel('u');
 axis equal;
+trisurf(T, X, Y, u);
 hold off;
