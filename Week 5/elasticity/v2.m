@@ -93,10 +93,8 @@ load('dist.mat');
 Ke = zeros(6,cntT*6);        % Allocate array of element stiffness matrices
 K  = zeros(cntV*2,cntV*2);   % Allocate global stiffness matrix
 B = zeros(3, 6);
-fe = zeros(4, cntT);
 
 % Now compute element stiffness matrices
-area = zeros(cntT, 1);
 for e=1:cntT
   
   % Get triangle indices
@@ -122,7 +120,6 @@ for e=1:cntT
   V1 = [xj - xi, yj - yi];
   V2 = [xk - xi, yk - yi];
   Ae = 0.5 * (V1(1) * V2(2) - V1(2) * V2(1));
-  area(e) = Ae;
   
   delNx = [-(yk - yj)/(2*Ae), -(yi - yk)/(2*Ae), -(yj - yi)/(2*Ae)];
   delNy = [(xk - xj)/(2*Ae), (xi - xk)/(2*Ae), (xj - xi)/(2*Ae)];
@@ -136,6 +133,25 @@ for e=1:cntT
   
 end
 
+% Assembly of  element matrix fe
+fx = 0;
+fy = -10e7;
+ff = [fx; fy];
+indices = find(X > 2.9);
+fe = zeros(4, length(indices) - 1);
+
+sortedY=Y(indices);
+sortedY=sort(sortedY);
+for v = 1:(length(indices) - 1)
+    xi = X(indices(v));
+    xj = X(indices(v + 1));
+    yi= sortedY(v,1); 
+    yj = sortedY(v+1,1);
+    I = [1 0 1 0; 0 1 0 1];
+    Le = sqrt((xj - xi)^2 + (yj - yi)^2);
+    fe(:, v) = 0.5 * Le * I' * ff;
+end
+   
 % Now do assembly process of global stiffness matrix
 for e=1:cntT
   
@@ -178,10 +194,19 @@ axis tight;
 % Create an  external nodal force vector with a prescribed load at the
 % right hand side of the bar
 
-load = -10e7;
+load = -10e10;
 f = zeros(2*cntV,1);
 indices = find(X>2.9);
-f( indices + cntV ) =  load;
+%f( indices + cntV ) =  load;
+% Assembly process for f matrix
+for a = 1:(length(fe) - 1)
+    i = indices(a);
+    j = indices(a + 1);
+    f(i) = f(i) + fe(1, a);
+    f(i + cntV) = f(i + cntV) + fe(2, a);
+    f(j) = f(j) + fe(3, a);
+    f(j + cntV) = f(j + cntV) + fe(4, a);
+end
 
 % Apply Direchlet boundary conditions to displacement field for the left
 % vertices.
@@ -222,28 +247,7 @@ sortedY=y(indices);
 sortedY=sort(sortedY);
 corner_y = sortedY(1); %CORNER NODE
 
-% Recalculate area for all elements
-new_area = zeros(cntT, 1);
-for e = 1:cntT
-  % Get triangle indices
-  i = T(e,1);  j = T(e,2); k = T(e,3);
-  
-  % Get triangle coordinates
-  xi = x(i); xj = x(j); xk = x(k);
-  yi = y(i); yj = y(j); yk = y(k);
- 
-  % Do cross product to get the area
-  V1 = [xj - xi, yj - yi];
-  V2 = [xk - xi, yk - yi];
-  Ae = 0.5 * (V1(1) * V2(2) - V1(2) * V2(1));
-  new_area(e) = Ae;
-end
-
-delta = new_area ./ area;
 figure(3);
-imagesc(delta);
-
-figure(4);
 clf;
 hold on;
 triplot(T,X,Y,'b');
