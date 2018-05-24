@@ -134,8 +134,8 @@ for e=1:cntT
 end
 
 % Assembly of  element matrix fe
-fx = 0;
-fy = -10e7;
+fy = 0;
+fx = 10e9;
 ff = [fx; fy];
 indices = find(X > 2.9);
 fe = zeros(4, length(indices) - 1);

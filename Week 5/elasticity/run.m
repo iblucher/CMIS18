@@ -178,10 +178,11 @@ axis tight;
 % Create an  external nodal force vector with a prescribed load at the
 % right hand side of the bar
 
-load = -10e7;
+load = 10e9;
 f = zeros(2*cntV,1);
 indices = find(X>2.9);
-f( indices + cntV ) =  load;
+f( indices ) =  load;
+%f( indices + cntV ) =  load;
 
 % Apply Direchlet boundary conditions to displacement field for the left
 % vertices.
@@ -240,10 +241,8 @@ for e = 1:cntT
 end
 
 delta = new_area ./ area;
-figure(3);
-imagesc(delta);
 
-figure(4);
+figure(3);
 clf;
 hold on;
 triplot(T,X,Y,'b');
