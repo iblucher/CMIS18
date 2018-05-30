@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 
-load('data.mat');  % Load mesh
+load('dist.mat');  % Load mesh
 
 [TR CVs Bmask] = create_control_volumes(T, X, Y);
 
@@ -11,7 +11,7 @@ clf;
 draw_control_volumes(TR, CVs, 0.05);
 axis equal;
 title('Computational mesh')
-%%
+
 [A, b] = matrix_assembly(T, X, Y, CVs);
 
 figure(2)

@@ -49,8 +49,9 @@ for k=1:N
         % edge is coming from inside domain and ends on the physical
         % boundary -- we must apply some special discretization
         
-        % >>> Add your solution here <<<<<
-        
+        dist = norm([X(i) - X(j), Y(i) - Y(j)]);
+        A(i, i) = A(i, i) + 1/dist * l;
+        A(i, j) = - 1/dist * l;  
         
       case 2
         % edge is on the physical boundary -- we must apply some boundary
@@ -69,6 +70,9 @@ end
 
 % Add Dirichlet condition to some node n , phi_n = 0;
 
-% >>> Add your solution here <<<<<
-
+a = pdist2([0 1], [X(:) Y(:)]);
+c = find(a == min(a));
+A(c, :) = 0;
+A(c, c) = 1;
+b(c) = 0;
 end
