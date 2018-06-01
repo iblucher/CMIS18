@@ -32,9 +32,9 @@ for k=1:N
     Mx = 0;
     My = 0;
     % >>> Add your solution for computing M field <<<<<
-    if pdist2([-1.5 0], [mx my]) <= 0.5
+    if pdist2([-1.5 0], [mx my]) <= 0.2
         b(k) = b(k) + [0 -1] * [nx ny]' * l;
-    elseif pdist2([1.5 0], [mx my]) <= 0.5
+    elseif pdist2([1.5 0], [mx my]) <= 0.2
         b(k) = b(k) + [0 -1] * [nx ny]' * l;
     end
     

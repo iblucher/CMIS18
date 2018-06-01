@@ -3,7 +3,7 @@
 %--- below in order to experiment with the mesh generation
 
 fd= @(p) drectangle(p,-3,3,-1,1)
-[p, T] = distmesh2d(fd,@huniform,0.15,[-3,-3;3,3],[-3,-1; -3,1; 3,-1; 3,1]);
+[p, T] = distmesh2d(fd,@huniform,0.1,[-3,-3;3,3],[-3,-1; -3,1; 3,-1; 3,1]);
 
 X      = p ( : , 1 ) ;
 Y      = p ( : , 2 ) ;
