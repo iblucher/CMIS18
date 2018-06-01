@@ -32,10 +32,15 @@ for k=1:N
     Mx = 0;
     My = 0;
     % >>> Add your solution for computing M field <<<<<
-    if norm([mx my]) <= 1
+    if pdist2([-1.5 0], [mx my]) <= 0.5
+        b(k) = b(k) + [0 -1] * [nx ny]' * l;
+    elseif pdist2([1.5 0], [mx my]) <= 0.5
         b(k) = b(k) + [0 -1] * [nx ny]' * l;
     end
     
+%     if norm([mx my]) <= 1
+%        b(k) = b(k) + [0 -1] * [nx ny]' * l;
+%     end
     
     switch( code)
       case 0

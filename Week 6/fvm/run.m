@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 
-load('dist.mat');  % Load mesh
+load('data.mat');  % Load mesh
 
 [TR CVs Bmask] = create_control_volumes(T, X, Y);
 
@@ -13,6 +13,8 @@ axis equal;
 title('Computational mesh')
 
 [A, b] = matrix_assembly(T, X, Y, CVs);
+figure(8);
+trisurf(T, X, Y, b);
 
 figure(2)
 clf;
