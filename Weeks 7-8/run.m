@@ -19,10 +19,12 @@ title('Computational mesh')
 % 
 % b = % Body force density
 % 
-% [lam, mu] = % The Lamé parameters (elasticity)
+% The Lamé parameters (elasticity)
+lam = 1;
+mu = 1;
 % 
 % dt = % The time step
 % 
 % simulator(CVs, T, X, Y, cntT, t, rho, b, lam, mu, dt);
-simulator(CVs, T, X, Y, cntT);
+simulator(CVs, T, X, Y, cntT, lam, mu);
 

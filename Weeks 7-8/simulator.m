@@ -1,4 +1,4 @@
-function simulator(CVs, T, X, Y, cntT)
+function simulator(CVs, T, X, Y, cntT, lambda, mu)
     [N, ~] = size(CVs);
     t = 0;
 
@@ -23,8 +23,7 @@ function simulator(CVs, T, X, Y, cntT)
        D0e = pinv(temp);
        D0(:, offset:offset + 1) = D0e;
     end
-    
-    
+
     D = zeros(2, cntT * 2);
     F = zeros(2, cntT * 2);
     E = zeros(2, cntT * 2);
@@ -66,18 +65,56 @@ function simulator(CVs, T, X, Y, cntT)
             Se = S(:, offset:offset + 1);
             P(:, offset:offset + 1) = Fe * Se;
         end
- 
         
-        for i = 1:N
-            CV = CVs{i};
+        f_elastic = zeros(2, N);
+        for cv = 1:N
+            CV = CVs{cv};
+            fe = 0;
+            inds = CV.indices
             
-             % sum all fe for this i
-             % compute ftotal for this i
+            for e = 1:length(inds)
+                tri_index = inds(e);
+                a = T(tri_index, 1);
+                b = T(tri_index, 2);
+                c = T(tri_index, 3);
+                center = CV.I(e);
+                [i, j, k] = find_vertex_order(center, a, b, c);
+                
+                % access Pe
+                Pe = P(:, tri_index * 2 - 1:tri_index * 2);
+                
+                % compute lengths
+                xji = X(j) - X(i);
+                yji = Y(j) - Y(i);
+                xki = X(k) - X(i);
+                yki = Y(k) - Y(i);
+                Lji = sqrt((xji)^ 2 + (yji)^2);
+                Lki = sqrt((xki)^ 2 + (yki)^2);
+                
+                % compute normal vectors
+                Vji = [xji; yji];
+                Vki = [xki; yki];
+                Nji = [-Vji(2); Vji(1)]; % vector orientations may be flipped
+                Nki = [Vki(2); -Vki(1)];
+                
+                Nji = Nji/abs(Lji);
+                Nki = Nki/abs(Lki);
+       
+                % sum all fe for this i
+                fe = fe + (- 0.5 * Pe * Nji * Lji - 0.5 * Pe * Nki * Lki);
+            end
+            f_elastic(:, cv) = fe;
+                
+                
+                % compute ftotal for this i
              
-             % update v for this i
-             % update x for this i
+                % another for!
+                % update v for this i
+                % update x for this i
         end
-        t = t + 1;
+        
+        
+        t = t + 0.25;
     end
     
 end
