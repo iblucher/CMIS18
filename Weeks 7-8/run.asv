@@ -19,20 +19,20 @@ rho = 7800;
 b = [0; gravity * rho];
 %b = [0; 0];
 
-traction = [0; -1e6];
+traction = [0; -10000];
 
 % The Lamé parameters (elasticity)
-E = 210e9;
-nu = 0.31; 
+E = 0.01e9;
+nu = 0.48; 
 
 mu = E / (2 * (1 + nu));
-lambda = (E * nu) / ((1 + nu) * (1 - 2 * nu));
+lambda = (E * nu) / ((
 
 %lambda = 1000;
 %mu = 0.31;
 
 % Time step
-dt = 10000000/ E;
+dt = 1e-3;
 
 X0 = X;
 Y0 = Y;
