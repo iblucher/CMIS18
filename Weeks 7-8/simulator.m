@@ -1,7 +1,8 @@
-function simulator(CVs, T, X, Y, X0, Y0, cntT, lambda, mu, rho, b0, dt, traction, Diri)
+function simulator(CVs, T, X, Y, X0, Y0, cntT, lambda, mu, rho, b0, dt, traction, traction2, Diri)
     [N, ~] = size(CVs);
     t = 0;
     velocities = zeros(2, N);
+    count = 0;
     
     % find boundary edges 
     TR2 = triangulation(T,X,Y);
@@ -9,6 +10,7 @@ function simulator(CVs, T, X, Y, X0, Y0, cntT, lambda, mu, rho, b0, dt, traction
     es1 = es(:,1);
     es2 = es(:,2);
     bound = es(X(es1) > 2.99 & X(es2) > 2.99,:);
+    bound2 = es(X(es1) < -2.99 & X(es2) < -2.99,:);
     
     
     % Computing the original deformation gradient D0 
@@ -145,6 +147,18 @@ function simulator(CVs, T, X, Y, X0, Y0, cntT, lambda, mu, rho, b0, dt, traction
             ft(:,bound(e,1)) = ft(:,bound(e,1)) + fl * l_half;
             ft(:,bound(e,2)) = ft(:,bound(e,2)) + fl * l_half;  
         end
+
+        for e = 1:(size(bound2,1))
+            xi = X(bound2(e,1));
+            xj = X(bound2(e,2));
+            yi = Y(bound2(e,1));
+            yj = Y(bound2(e,2));
+            fl = traction2;
+            l_half = sqrt((xi - xj)^2 + (yi - yj)^2);
+            l_half = l_half/2;
+            ft(:,bound2(e,1)) = ft(:,bound2(e,1)) + fl * l_half;
+            ft(:,bound2(e,2)) = ft(:,bound2(e,2)) + fl * l_half;  
+        end
         
         for cv = 1:N
             f_total(:, cv) = f_ext(:, cv) + f_elastic(:, cv) + ft(:, cv);
@@ -170,7 +184,7 @@ function simulator(CVs, T, X, Y, X0, Y0, cntT, lambda, mu, rho, b0, dt, traction
         velocities(:, Diri) = 0;
         
         % plot mesh
-        figure(1);
+        fig = figure(1);
         clf;
         hold on;
         quiver(X, Y, velocities(1, :)', velocities(2, :)', 'g');
@@ -182,10 +196,18 @@ function simulator(CVs, T, X, Y, X0, Y0, cntT, lambda, mu, rho, b0, dt, traction
         title(t);
         xlabel('x');
         ylabel('y');
-        axis equal;
+        xlim([-4 4]);
+        ylim([-4, 2]);
+        %axis equal;
         hold off;
         
+        filename = sprintf('exp9/%d.jpg', count) ;
+        saveas(fig, filename);
+        
+        %close(fig)
+        
         t = t + dt;
+        count = count + 1;
     end
     
 end
